@@ -14,12 +14,12 @@ func DeleteRule(rule_id model.RuleIdType) bool {
 	return false
 }
 
-func PauseRule(rule *model.Rule) bool {
+func PauseRule(rule_id model.RuleIdType) bool {
 	//TODO
 	return false
 }
 
-func RecoverRule(rule *model.Rule) bool {
+func RecoverRule(rule_id model.RuleIdType) bool {
 	//TODO
 	return false
 }
