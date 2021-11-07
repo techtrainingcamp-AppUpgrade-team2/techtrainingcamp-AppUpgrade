@@ -34,6 +34,6 @@ func RecoverRuleHandle(c *gin.Context) {
 func UpdateCheckHandle(c *gin.Context) {
 	//var cd model.ClientData
 	//TODO
-	//hit, pkg_data := service.UpdateCheck(&cd)
+	//hit, pkg_data := service.UpgradeCheck(&cd)
 	//TODO
 }
