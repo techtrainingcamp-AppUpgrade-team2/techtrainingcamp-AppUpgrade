@@ -61,3 +61,37 @@ func PullDeviceIdListFromDB(rule_id model.RuleIdType) (device_id_list string) {
 	db.First(&rule, "rid = ?",rule_id)
 	return rule.DeviceIdList
 }
+
+func DeleteRuleFromDB(rule_id model.RuleIdType) bool{
+	var db = ConnectDb()
+	var rule model.Rule
+	//查询
+	db.First(&rule, "rid = ?",rule_id)
+	//删除
+	db.Delete(rule)
+	return true
+}
+
+func PauseRuleFromDB(rule_id model.RuleIdType) bool{
+	var db = ConnectDb()
+	var rule model.Rule
+	//查询
+	db.First(&rule, "rid = ?",rule_id)
+	//修改状态
+	rule.State = false
+	//更新
+	db.Save(&rule)
+	return true
+}
+
+func RecoverRuleFromDB(rule_id model.RuleIdType) bool{
+	var db = ConnectDb()
+	var rule model.Rule
+	//查询
+	db.First(&rule, "rid = ?",rule_id)
+	//修改状态
+	rule.State = true
+	//更新
+	db.Save(&rule)
+	return true
+}
