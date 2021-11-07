@@ -26,3 +26,14 @@ type Rule struct {
 	Title             string `form:"title"`               //弹窗标题
 	UpdateTips        string `form:"update_tips"`         //弹窗文本
 }
+
+func (rule Rule) GetUpdatePackageInfo() PkgData {
+	pkgData := PkgData{
+		rule.DownloadUrl,
+		rule.UpdateVersionCode,
+		rule.Md5,
+		rule.Title,
+		rule.UpdateTips,
+	}
+	return pkgData
+}
