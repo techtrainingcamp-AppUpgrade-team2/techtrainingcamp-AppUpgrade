@@ -16,7 +16,7 @@ func RemoveDeviceIDList(rule_id model.RuleIdType) {
 }
 
 //指定的device_id是否在指定规则的白名单列表中
-func CheckDeviceIDListList(rule_id model.RuleIdType, device_id string) (hit bool) {
+func CheckDeviceIDList(rule_id model.RuleIdType, device_id string) (hit bool) {
 	//TODO
 	return false
 }
