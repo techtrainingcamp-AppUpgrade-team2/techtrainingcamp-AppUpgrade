@@ -2,11 +2,11 @@ package service
 
 import (
 	"app_upgrade/model"
+	"fmt"
 	"gorm.io/driver/mysql"
 	_ "gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	_ "gorm.io/gorm"
-	"fmt"
 	"strings"
 )
 
