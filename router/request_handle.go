@@ -78,3 +78,15 @@ func UpgradeCheckHandle(c *gin.Context) {
 		c.String(http.StatusNoContent, "No upgrade package was matched.")
 	}
 }
+
+//ghy实现版本
+// func UpdateCheckHandle(c *gin.Context) {
+// 	var clientData model.ClientData
+// 	if err := c.ShouldBind(&clientData); err == nil {
+// 		if isHit, pkgData := service.UpdateCheck(clientData); isHit {
+// 			c.JSON(http.StatusOK, pkgData)
+// 		}
+// 	} else {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 	}
+// }
