@@ -48,7 +48,7 @@ func checkRule(cd *model.ClientData, rule *model.Rule) bool {
 		return false
 	}
 	//设备ID是否在规则的白名单内
-	if !CheckDeviceIDListList(rule.Rid, model.DeviceIdType(cd.DeviceId)) {
+	if !CheckDeviceIDListList(rule.Rid, cd.DeviceId) {
 		return false
 	}
 	//匹配CPU架构
