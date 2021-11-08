@@ -46,12 +46,20 @@ func SaveRuleToDB(rule *model.Rule) bool {
 
 	return true
 }
+
 func GetRuleFromDB(rule_id model.RuleIdType) model.Rule{
 	//TODO
 	var db = ConnectDb()
 	var rule model.Rule
 	db.First(&rule, "rid = ?",rule_id)
 	return rule
+}
+
+func GetRulesFromDB() (rules []model.Rule) {
+	//TODO
+	var db = ConnectDb()
+	db.Find(&rules)
+	return rules
 }
 
 func PullDeviceIdListFromDB(rule_id model.RuleIdType) (device_id_list string) {
