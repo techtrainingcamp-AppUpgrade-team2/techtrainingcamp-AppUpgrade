@@ -13,8 +13,7 @@ import (
 // @return            hit           客户请求是否命中
 // @return            pkg           升级包的信息
 func UpgradeCheck(cd *model.ClientData) (hit bool, pkg *model.PkgData) {
-	var rules []*model.Rule //等待以下api实现
-	//rules := GetRulesFromDB() //获取所有规则
+	rules := GetRulesFromDB() //获取所有规则
 
 	var hit_rule *model.Rule = nil
 	max_version := cd.VertionCode
