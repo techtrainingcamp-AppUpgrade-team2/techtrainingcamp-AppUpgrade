@@ -13,8 +13,8 @@ func AddDeviceIDList(rule_id model.RuleIdType, device_id_list string) {
 	DeviceIDList := make(map[model.DeviceIdType]struct{})
 	var Exists = struct{}{}
 	sep := ";"
-	arr := strings.Split(device_id_list,sep)
-	for i:=0;i<len(arr);i++ {
+	arr := strings.Split(device_id_list, sep)
+	for i := 0; i < len(arr); i++ {
 		//print(arr[i])
 		var diviceId model.DeviceIdType
 		diviceId = model.DeviceIdType(arr[i])
@@ -29,7 +29,7 @@ func AddDeviceIDList(rule_id model.RuleIdType, device_id_list string) {
 
 //从Cache中去除指定规则的白名单
 func RemoveDeviceIDList(rule_id model.RuleIdType) {
-	delete(DeviceIDCache,rule_id)
+	delete(DeviceIDCache, rule_id)
 	//TODO
 }
 

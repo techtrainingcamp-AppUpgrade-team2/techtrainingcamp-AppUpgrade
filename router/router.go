@@ -8,8 +8,8 @@ import (
 
 //GET请求路由表
 var router_get = map[string]func(*gin.Context){
-	"/":      service.Demo,
-	"update": UpdateCheckHandle,
+	"/":       service.Demo,
+	"upgrade": UpgradeCheckHandle,
 }
 
 //POST请求路由表

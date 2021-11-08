@@ -3,6 +3,8 @@ package service
 import (
 	"app_upgrade/model"
 	"log"
+
+	idworker "github.com/gitstliu/go-id-worker"
 )
 
 func AddRule(rule *model.Rule) bool {

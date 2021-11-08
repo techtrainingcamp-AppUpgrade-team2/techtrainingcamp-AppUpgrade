@@ -6,43 +6,50 @@ import (
 	"strings"
 )
 
-// @title             UpdateCheck
+// @title             UpgradeCheck
 // @description       检查所有规则，命中则返升级包的信息
-// @auth              卢品洲         2021/11/7  10:30
-// @param             cd            model.ClientData    客户端数据
-// @return            hit           bool                客户请求是否命中
-// @return            pkg           model.PkgData       升级包的信息
+// @auth              卢品洲         2021/11/7
+// @param             cd            客户端数据
+// @return            hit           客户请求是否命中
+// @return            pkg           升级包的信息
 func UpgradeCheck(cd *model.ClientData) (hit bool, pkg *model.PkgData) {
-	rules := GetRulesFromDB() //获取所有规则，TODO：性能？
+	var rules []*model.Rule //等待以下api实现
+	//rules := GetRulesFromDB() //获取所有规则
 
-	for _, rule := range rules { //遍历规则列表
-		hit = checkRule(cd, rule) //若某条规则与客户端信息匹配，则返回升级包的信息
-		if hit {
-			return true, &model.PkgData{
-				DownloadUrl:       rule.DownloadUrl,
-				UpdateVersionCode: rule.UpdateVersionCode,
-				Md5:               rule.Md5,
-				Title:             rule.Title,
-				UpdateTips:        rule.UpdateTips,
-			}
+	var hit_rule *model.Rule = nil
+	max_version := cd.VertionCode
+	for _, rule := range rules { //匹配最高版本的规则
+		if checkRule(cd, rule) && version_less(max_version, rule.UpdateVersionCode) {
+			hit_rule = rule
 		}
 	}
-	return false, nil
+
+	if hit_rule != nil {
+		return true, &model.PkgData{
+			DownloadUrl:       hit_rule.DownloadUrl,
+			UpdateVersionCode: hit_rule.UpdateVersionCode,
+			Md5:               hit_rule.Md5,
+			Title:             hit_rule.Title,
+			UpdateTips:        hit_rule.UpdateTips,
+		}
+	} else {
+		return false, nil
+	}
 }
 
 // @title             checkRule
 // @description       检查某一条客户端信息是否命中指定规则
 // @auth              卢品洲         2021/11/7
-// @param             cd            model.ClientData    客户端数据
-// @param             rule          model.Rule          所指定的规则
-// @return            -             bool                是否命中
+// @param             cd            客户端数据
+// @param             rule          所指定的规则
+// @return            -             是否命中
 func checkRule(cd *model.ClientData, rule *model.Rule) bool {
 	//匹配app_id、平台、渠道
 	if cd.Aid != rule.Aid || cd.DevicePlatform != rule.Platform || cd.Channel != rule.Channel {
 		return false
 	}
 	//设备ID是否在规则的白名单内
-	if !CheckDeviceIDList(rule.Rid, string(cd.DeviceId)) {
+	if !CheckDeviceIDListList(rule.Rid, string(cd.DeviceId)) {
 		return false
 	}
 	//匹配CPU架构
@@ -64,8 +71,8 @@ func checkRule(cd *model.ClientData, rule *model.Rule) bool {
 // @title             version_less
 // @description       判断两个版本号的大小关系
 // @auth              卢品洲         2021/11/7
-// @param             v1,v2         string    待比较的两个版本号,如8.1.3、9.4.6.1
-// @return            -             bool      v1是否严格小于v2
+// @param             v1,v2         待比较的两个版本号
+// @return            -             v1是否严格小于v2
 func version_less(v1, v2 string) bool {
 	//分割版本号并“对齐”
 	arr1, arr2 := strings.Split(v1, "."), strings.Split(v2, ".")
