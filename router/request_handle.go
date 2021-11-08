@@ -66,27 +66,27 @@ func RecoverRuleHandle(c *gin.Context) {
 // @description       根据客户端发送的JSON数据，匹配升级包并以JSON格式回传到客户端
 // @auth              卢品洲         2021/11/8
 // @param             c             请求句柄
-func UpgradeCheckHandle(c *gin.Context) {
-	var cd model.ClientData
-	if err := c.ShouldBind(&cd); err != nil {
-		c.String(http.StatusBadRequest, "Input error!")
-	}
-	hit, pkg_data := service.UpgradeCheck(&cd)
-	if hit {
-		c.JSON(200, pkg_data)
-	} else {
-		c.String(http.StatusNoContent, "No upgrade package was matched.")
-	}
-}
-
-//ghy实现版本
-// func UpdateCheckHandle(c *gin.Context) {
-// 	var clientData model.ClientData
-// 	if err := c.ShouldBind(&clientData); err == nil {
-// 		if isHit, pkgData := service.UpdateCheck(clientData); isHit {
-// 			c.JSON(http.StatusOK, pkgData)
-// 		}
+// func UpgradeCheckHandle(c *gin.Context) {
+// 	var cd model.ClientData
+// 	if err := c.ShouldBind(&cd); err != nil {
+// 		c.String(http.StatusBadRequest, "Input error!")
+// 	}
+// 	hit, pkg_data := service.UpgradeCheck(&cd)
+// 	if hit {
+// 		c.JSON(200, pkg_data)
 // 	} else {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		c.String(http.StatusNoContent, "No upgrade package was matched.")
 // 	}
 // }
+
+//ghy实现版本
+func UpgradeCheckHandle(c *gin.Context) {
+	var clientData model.ClientData
+	if err := c.ShouldBind(&clientData); err == nil {
+		if isHit, pkgData := service.UpgradeCheck(&clientData); isHit {
+			c.JSON(http.StatusOK, pkgData)
+		}
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+}

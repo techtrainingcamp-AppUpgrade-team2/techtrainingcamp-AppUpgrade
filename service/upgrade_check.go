@@ -13,8 +13,8 @@ import (
 // @return            hit           客户请求是否命中
 // @return            pkg           升级包的信息
 func UpgradeCheck(cd *model.ClientData) (hit bool, pkg *model.PkgData) {
-	var rules []*model.Rule //等待以下api实现
-	//rules := GetRulesFromDB() //获取所有规则
+	//var rules []*model.Rule
+	rules := GetRulesFromDB() //获取所有规则
 
 	var hit_rule *model.Rule = nil
 	max_version := cd.VertionCode
@@ -49,7 +49,7 @@ func checkRule(cd *model.ClientData, rule *model.Rule) bool {
 		return false
 	}
 	//设备ID是否在规则的白名单内
-	if !CheckDeviceIDListList(rule.Rid, string(cd.DeviceId)) {
+	if !CheckDeviceIDListList(rule.Rid, model.DeviceIdType(cd.DeviceId)) {
 		return false
 	}
 	//匹配CPU架构
@@ -83,7 +83,7 @@ func version_less(v1, v2 string) bool {
 		arr2 = append(arr2, "0")
 	}
 
-	for i, _ := range arr1 {
+	for i := range arr1 {
 		n1, _ := strconv.Atoi(arr1[i])
 		n2, _ := strconv.Atoi(arr2[i])
 		if n1 < n2 {
