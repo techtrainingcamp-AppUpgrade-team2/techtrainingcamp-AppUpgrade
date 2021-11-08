@@ -12,4 +12,5 @@ type ClientData struct {
 	Update_versionCode string       `form:"update_version_code" json:"update_version_code"` //应用小版本，如8.1.4.01
 	Aid                int          `form:"aid" json:"aid"`                                 //app的唯一标识
 	CpuArch            int          `form:"cpu_arch" json:"cpu_arch"`                       //设备的CPU结构，如32/64
+
 }

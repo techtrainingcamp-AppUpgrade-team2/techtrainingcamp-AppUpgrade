@@ -35,3 +35,4 @@ func CheckDeviceIDListList(rule_id model.RuleIdType, device_id model.DeviceIdTyp
 	_, hit = deviceIDCache[rule_id][device_id]
 	return hit
 }
+
