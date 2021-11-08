@@ -17,9 +17,9 @@ func UpgradeCheck(cd *model.ClientData) (hit bool, pkg *model.PkgData) {
 
 	var hit_rule *model.Rule = nil
 	max_version := cd.VertionCode
-	for _, rule := range rules { //匹配最高版本的规则
-		if checkRule(cd, rule) && version_less(max_version, rule.UpdateVersionCode) {
-			hit_rule = rule
+	for i := range rules { //匹配最高版本的规则
+		if checkRule(cd, &rules[i]) && version_less(max_version, rules[i].UpdateVersionCode) {
+			hit_rule = &rules[i]
 		}
 	}
 
