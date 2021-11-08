@@ -55,7 +55,7 @@ func GetRuleFromDB(rule_id model.RuleIdType) model.Rule{
 	return rule
 }
 
-func GetRulesFromDB() (rules []model.Rule) {
+func GetRulesFromDB() (rules []*model.Rule) {
 	//TODO
 	var db = ConnectDb()
 	db.Find(&rules)
