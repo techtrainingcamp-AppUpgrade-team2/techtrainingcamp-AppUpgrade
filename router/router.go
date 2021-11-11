@@ -7,12 +7,12 @@ import (
 //GET请求路由表
 var router_get = map[string]func(*gin.Context){
 	"/upgrade": UpgradeCheckHandle,
+	"/get":GetRulesHandle,
 }
 
 //POST请求路由表
 var router_post = map[string]func(*gin.Context){
 	"rule/add": AddRuleHandle,
-
 	"rule/delete":  DeleteRuleHandle,
 	"rule/pause":   PauseRuleHandle,
 	"rule/recover": RecoverRuleHandle,

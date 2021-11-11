@@ -3,13 +3,16 @@ package router
 import (
 	"app_upgrade/model"
 	"app_upgrade/service"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"strconv"
-
-	"github.com/gin-gonic/gin"
 )
 
+// @title             AddRuleHandle
+// @description       添加规则，根据管理员发送的JSON数据，存储规则
+// @auth              刘晶玉         2021/11/11
+// @param             c             请求句柄
 func AddRuleHandle(c *gin.Context) {
 	var rule model.Rule
 	//TODO
@@ -20,6 +23,10 @@ func AddRuleHandle(c *gin.Context) {
 	service.AddRule(&rule)
 }
 
+// @title             DeleteRuleHandle
+// @description       删除规则，根据管理员发送的rid
+// @auth              刘晶玉         2021/11/11
+// @param             c             请求句柄
 func DeleteRuleHandle(c *gin.Context) {
 	var rule_id model.RuleIdType
 	//TODO
@@ -34,6 +41,10 @@ func DeleteRuleHandle(c *gin.Context) {
 	}
 }
 
+// @title             PauseRuleHandle
+// @description       暂停规则，根据管理员发送的rid
+// @auth              刘晶玉         2021/11/11
+// @param             c             请求句柄
 func PauseRuleHandle(c *gin.Context) {
 	var rule_id model.RuleIdType
 	//TODO
@@ -48,6 +59,10 @@ func PauseRuleHandle(c *gin.Context) {
 	}
 }
 
+// @title             PauseRuleHandle
+// @description       暂停规则，根据管理员发送的rid
+// @auth              刘晶玉         2021/11/11
+// @param             c             请求句柄
 func RecoverRuleHandle(c *gin.Context) {
 	var rule_id model.RuleIdType
 	//TODO
@@ -60,6 +75,15 @@ func RecoverRuleHandle(c *gin.Context) {
 		rule_id = model.RuleIdType(rule_id_int)
 		service.RecoverRule(rule_id)
 	}
+}
+
+// @title             GetRulesHandle
+// @description       得到当前正在生效和暂停的规则
+// @auth              刘晶玉         2021/11/11
+// @param             c             请求句柄
+func GetRulesHandle(c *gin.Context){
+	rules := service.GetRules()
+	c.JSON(http.StatusOK, rules)
 }
 
 // @title             UpgradeCheckHandle
