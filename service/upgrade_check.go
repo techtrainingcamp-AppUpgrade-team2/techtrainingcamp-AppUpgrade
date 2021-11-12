@@ -18,19 +18,13 @@ func UpgradeCheck(cd *model.ClientData) (hit bool, pkg *model.PkgData) {
 	var hit_rule *model.Rule = nil
 	max_version := cd.VertionCode
 	for i := range rules { //匹配最高版本的规则
-		if checkRule(cd, &rules[i]) && version_less(max_version, rules[i].UpdateVersionCode) {
+		if rules[i].State && checkRule(cd, &rules[i]) && versionLess(max_version, rules[i].UpdateVersionCode) {
 			hit_rule = &rules[i]
 		}
 	}
 
 	if hit_rule != nil {
-		return true, &model.PkgData{
-			DownloadUrl:       hit_rule.DownloadUrl,
-			UpdateVersionCode: hit_rule.UpdateVersionCode,
-			Md5:               hit_rule.Md5,
-			Title:             hit_rule.Title,
-			UpdateTips:        hit_rule.UpdateTips,
-		}
+		return true, hit_rule.GetUpdatePackageInfo()
 	} else {
 		return false, nil
 	}
@@ -48,9 +42,9 @@ func checkRule(cd *model.ClientData, rule *model.Rule) bool {
 		return false
 	}
 	//设备ID是否在规则的白名单内
-	if !CheckDeviceIDListList(rule.Rid, cd.DeviceId) {
-		return false
-	}
+	// if !CheckDeviceIDListList(rule.Rid, cd.DeviceId) {
+	// 	return false
+	// }
 	//匹配CPU架构
 	if tmp, _ := strconv.Atoi(rule.CpuArch); cd.CpuArch != tmp {
 		return false
@@ -60,19 +54,19 @@ func checkRule(cd *model.ClientData, rule *model.Rule) bool {
 		return false
 	}
 	//检查客户端当前版本号是否在[MinUpdateVersionCode,MaxUpdateVersionCode]内
-	if version_less(cd.VertionCode, rule.MinUpdateVersionCode) || version_less(rule.MaxUpdateVersionCode, cd.VertionCode) {
+	if versionLess(cd.VertionCode, rule.MinUpdateVersionCode) || versionLess(rule.MaxUpdateVersionCode, cd.VertionCode) {
 		return false
 	}
 
 	return true
 }
 
-// @title             version_less
+// @title             versionLess
 // @description       判断两个版本号的大小关系
 // @auth              卢品洲         2021/11/7
 // @param             v1,v2         待比较的两个版本号
 // @return            -             v1是否严格小于v2
-func version_less(v1, v2 string) bool {
+func versionLess(v1, v2 string) bool {
 	//分割版本号并“对齐”
 	arr1, arr2 := strings.Split(v1, "."), strings.Split(v2, ".")
 	for len(arr1) < len(arr2) {
@@ -82,6 +76,7 @@ func version_less(v1, v2 string) bool {
 		arr2 = append(arr2, "0")
 	}
 
+	//比较大小
 	for i := range arr1 {
 		n1, _ := strconv.Atoi(arr1[i])
 		n2, _ := strconv.Atoi(arr2[i])

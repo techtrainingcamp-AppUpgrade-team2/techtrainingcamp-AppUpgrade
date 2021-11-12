@@ -2,6 +2,7 @@ package model
 
 type RuleIdType int
 
+//Rule 版本更新规则的具体内容
 type Rule struct {
 	//标识信息
 	State bool       `json:"state"` //规则是否可用
@@ -19,7 +20,7 @@ type Rule struct {
 	MaxOsApi             int    `json:"max_os_api"`
 	CpuArch              string `json:"cpu_arch"` //CPU架构
 
-	//包信息，TODO:以下字段是否冗余？
+	//包信息
 	DownloadUrl       string `json:"download_url"`        //下载链接
 	UpdateVersionCode string `json:"update_version_code"` //版本号
 	Md5               string `json:"md5"`                 //哈希值
@@ -27,13 +28,12 @@ type Rule struct {
 	UpdateTips        string `json:"update_tips"`         //弹窗文本
 }
 
-func (rule Rule) GetUpdatePackageInfo() PkgData {
-	pkgData := PkgData{
+func (rule *Rule) GetUpdatePackageInfo() *PkgData {
+	return &PkgData{
 		rule.DownloadUrl,
 		rule.UpdateVersionCode,
 		rule.Md5,
 		rule.Title,
 		rule.UpdateTips,
 	}
-	return pkgData
 }

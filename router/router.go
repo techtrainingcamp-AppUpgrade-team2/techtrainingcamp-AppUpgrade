@@ -7,12 +7,12 @@ import (
 //GET请求路由表
 var router_get = map[string]func(*gin.Context){
 	"/upgrade": UpgradeCheckHandle,
-	"/get":GetRulesHandle,
+	"/get":     GetRulesHandle,
 }
 
 //POST请求路由表
 var router_post = map[string]func(*gin.Context){
-	"rule/add": AddRuleHandle,
+	"rule/add":     AddRuleHandle,
 	"rule/delete":  DeleteRuleHandle,
 	"rule/pause":   PauseRuleHandle,
 	"rule/recover": RecoverRuleHandle,
@@ -20,6 +20,11 @@ var router_post = map[string]func(*gin.Context){
 
 //...其它路由表
 
+// @title             RouterInit
+// @description       初始化router，并返回
+// @auth              卢品洲         2021/11/7
+// @param             -
+// @return            -             router
 func RouterInit() *gin.Engine {
 	router := gin.Default()
 

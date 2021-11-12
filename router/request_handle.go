@@ -3,10 +3,11 @@ package router
 import (
 	"app_upgrade/model"
 	"app_upgrade/service"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 // @title             AddRuleHandle
@@ -81,9 +82,24 @@ func RecoverRuleHandle(c *gin.Context) {
 // @description       得到当前正在生效和暂停的规则
 // @auth              刘晶玉         2021/11/11
 // @param             c             请求句柄
-func GetRulesHandle(c *gin.Context){
+func GetRulesHandle(c *gin.Context) {
 	rules := service.GetRules()
 	c.JSON(http.StatusOK, rules)
+}
+
+// @title             UpgradeCheckHandle
+// @description       根据客户端发送的JSON数据，匹配升级包并以JSON格式回传到客户端
+// @auth              高宏宇         2021/11/8
+// @param             c             请求句柄
+func UpgradeCheckHandle(c *gin.Context) {
+	var clientData model.ClientData
+	if err := c.ShouldBind(&clientData); err == nil {
+		if isHit, pkgData := service.UpgradeCheck(&clientData); isHit {
+			c.JSON(http.StatusOK, pkgData)
+		}
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
 }
 
 // @title             UpgradeCheckHandle
@@ -102,15 +118,3 @@ func GetRulesHandle(c *gin.Context){
 // 		c.String(http.StatusNoContent, "No upgrade package was matched.")
 // 	}
 // }
-
-//ghy实现版本
-func UpgradeCheckHandle(c *gin.Context) {
-	var clientData model.ClientData
-	if err := c.ShouldBind(&clientData); err == nil {
-		if isHit, pkgData := service.UpgradeCheck(&clientData); isHit {
-			c.JSON(http.StatusOK, pkgData)
-		}
-	} else {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	}
-}
