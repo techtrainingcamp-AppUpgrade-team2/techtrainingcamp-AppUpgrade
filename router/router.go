@@ -1,11 +1,14 @@
 package router
 
 import (
+	"app_upgrade/service"
+
 	"github.com/gin-gonic/gin"
 )
 
 //GET请求路由表
 var router_get = map[string]func(*gin.Context){
+	"/ping":    service.Pong,
 	"/upgrade": UpgradeCheckHandle,
 	"/get":     GetRulesHandle,
 }

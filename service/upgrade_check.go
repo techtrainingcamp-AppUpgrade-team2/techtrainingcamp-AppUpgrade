@@ -41,10 +41,10 @@ func checkRule(cd *model.ClientData, rule *model.Rule) bool {
 	if cd.Aid != rule.Aid || cd.DevicePlatform != rule.Platform || cd.Channel != rule.Channel {
 		return false
 	}
-	//设备ID是否在规则的白名单内
-	// if !CheckDeviceIDListList(rule.Rid, cd.DeviceId) {
-	// 	return false
-	// }
+	//设备ID是否在规则的白名单内，若在则直接命中
+	if CheckDeviceIDListList(rule.Rid, cd.DeviceId) {
+		return true
+	}
 	//匹配CPU架构
 	if tmp, _ := strconv.Atoi(rule.CpuArch); cd.CpuArch != tmp {
 		return false
