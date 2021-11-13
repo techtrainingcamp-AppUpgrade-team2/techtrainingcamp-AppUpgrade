@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-COPY techtrainingcamp-AppUpgrade /root/server
+COPY app_upgrade /root/server
 EXPOSE 8080
 EXPOSE 11451
 ENV IS_DOCKER 1
