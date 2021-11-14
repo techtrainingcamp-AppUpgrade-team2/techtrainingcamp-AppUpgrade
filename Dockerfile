@@ -1,5 +1,4 @@
 FROM ubuntu:latest
 COPY main /root/server
-EXPOSE 9090
-ENV IS_DOCKER 1
+EXPOSE 8080
 CMD /root/server
