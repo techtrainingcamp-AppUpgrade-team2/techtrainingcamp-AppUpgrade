@@ -39,7 +39,10 @@ func AddRule(rule *model.Rule) bool {
 // @param             rule_id             规则id
 func DeleteRule(rule_id model.RuleIdType) bool {
 	//TODO
-	DeleteRuleFromDB(rule_id)	//数据库删除rule
+	//数据库删除rule
+	if DeleteRuleFromDB(rule_id) == false{
+		return false
+	}
 	RemoveDeviceIDList(rule_id)	//删除cache对应DeviceId白名单
 	return true
 }
@@ -50,7 +53,10 @@ func DeleteRule(rule_id model.RuleIdType) bool {
 // @param             rule_id             规则id
 func PauseRule(rule_id model.RuleIdType) bool {
 	//TODO
-	PauseRuleFromDB(rule_id)	//数据库修改rule的状态state
+	//数据库修改rule的状态state
+	if PauseRuleFromDB(rule_id)== false{
+		return false
+	}
 	RemoveDeviceIDList(rule_id)	//删除cache对应DeviceId白名单
 	return true
 }
@@ -61,7 +67,10 @@ func PauseRule(rule_id model.RuleIdType) bool {
 // @param             rule_id             规则id
 func RecoverRule(rule_id model.RuleIdType) bool {
 	//TODO
-	RecoverRuleFromDB(rule_id)	//数据库修改rule的状态state
+	//数据库修改rule的状态state
+	if RecoverRuleFromDB(rule_id)== false{
+		return false
+	}
 	rule := GetRuleFromDB(rule_id)	//从数据库取得rid对应rule详细
 	AddDeviceIDList(rule.Rid, rule.DeviceIdList)	//添加到cache白名单
 	return true

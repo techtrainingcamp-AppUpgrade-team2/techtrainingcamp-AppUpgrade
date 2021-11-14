@@ -68,36 +68,50 @@ func PullDeviceIdListFromDB(rule_id model.RuleIdType) (device_id_list string) {
 	return rule.DeviceIdList
 }
 
+// @title             DeleteRuleFromDB
+// @description       从数据库删除规则
+// @auth              刘晶玉         2021/11/14
+// @param             rule_id          规则id
 func DeleteRuleFromDB(rule_id model.RuleIdType) bool {
 	var db = ConnectDb()
+	//查询是否存在
 	var rule model.Rule
-	//查询
-	db.First(&rule, "rid = ?", rule_id)
+	if db.First(&rule, "rid = ?", rule_id).Error != nil{
+		return false
+	}
 	//删除
-	db.Delete(rule)
+	db.Delete(&model.Rule{},"rid=?",rule_id)
 	return true
 }
 
+// @title             PauseRuleFromDB
+// @description       从数据库暂停规则
+// @auth              刘晶玉         2021/11/14
+// @param             rule_id          规则id
 func PauseRuleFromDB(rule_id model.RuleIdType) bool {
 	var db = ConnectDb()
 	var rule model.Rule
-	//查询
-	db.First(&rule, "rid = ?", rule_id)
-	//修改状态
-	rule.State = false
+	//查询存在
+	if db.First(&rule, "rid = ?", rule_id).Error != nil{
+		return false
+	}
 	//更新
-	db.Save(&rule)
+	db.Model(model.Rule{}).Where("state", true).Update("state", false)
 	return true
 }
 
+// @title             RecoverRuleFromDB
+// @description       从数据库恢复规则
+// @auth              刘晶玉         2021/11/14
+// @param             rule_id          规则id
 func RecoverRuleFromDB(rule_id model.RuleIdType) bool {
 	var db = ConnectDb()
 	var rule model.Rule
-	//查询
-	db.First(&rule, "rid = ?", rule_id)
-	//修改状态
-	rule.State = true
+	//查询存在
+	if db.First(&rule, "rid = ?", rule_id).Error != nil{
+		return false
+	}
 	//更新
-	db.Save(&rule)
+	db.Model(model.Rule{}).Where("state", false).Update("state", true)
 	return true
 }
